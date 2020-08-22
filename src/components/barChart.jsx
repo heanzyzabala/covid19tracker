@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 
-export default function LineChart({ label, data, color }) {
+export default function BarChart({ label, data, color }) {
     const colors = {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
@@ -19,10 +19,9 @@ export default function LineChart({ label, data, color }) {
                 label,
                 data,
                 lineTension: 0,
-                borderColor: colors[color],
+                backgroundColor: colors[color],
                 fill: false,
-                pointBackgroundColor: 'rgba(0, 0, 0, 0)',
-                pointBorderColor: 'rgba(0, 0, 0, 0)',
+                hoverBackgroundColor: colors.purple,
             },
         ],
     };
@@ -39,16 +38,16 @@ export default function LineChart({ label, data, color }) {
             ],
         },
     };
-    return <Line data={d} options={opts} />;
+    return <Bar data={d} options={opts} />;
 }
 
-LineChart.propTypes = {
+BarChart.propTypes = {
     label: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired,
     data: PropTypes.arrayOf(
         PropTypes.shape({
             x: PropTypes.string.isRequired,
             y: PropTypes.number.isRequired,
-        }).isRequired,
+        }),
     ).isRequired,
 };
