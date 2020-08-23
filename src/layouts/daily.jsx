@@ -19,7 +19,7 @@ export default function Daily() {
         isLoading: true,
         cases: {
             perDay: [],
-            cummulative: [],
+            cumulative: [],
             highestInAday: {},
             overall: {},
             averagePerDay: 0,
@@ -27,7 +27,7 @@ export default function Daily() {
         },
         deaths: {
             perDay: [],
-            cummulative: [],
+            cumulative: [],
             highestInAday: {},
             overall: {},
             averagePerDay: 0,
@@ -35,7 +35,7 @@ export default function Daily() {
         },
         recoveries: {
             perDay: [],
-            cummulative: [],
+            cumulative: [],
             highestInAday: {},
             overall: {},
             averagePerDay: 0,
@@ -86,49 +86,49 @@ export default function Daily() {
             const result = await getHistoryByCountry('Philippines');
             const { cases, deaths, recovered } = result.data.timeline;
 
-            const cummulativeCases = map(cases);
-            const casesPerDay = mapDifference(cummulativeCases);
+            const cumulativeCases = map(cases);
+            const casesPerDay = mapDifference(cumulativeCases);
             const highestCasesInAday = findHighest(casesPerDay);
-            const overallCases = cummulativeCases[cummulativeCases.length - 1];
+            const overallCases = cumulativeCases[cumulativeCases.length - 1];
 
-            const cummulativeDeaths = map(deaths);
-            const deathsPerDay = mapDifference(cummulativeDeaths);
+            const cumulativeDeaths = map(deaths);
+            const deathsPerDay = mapDifference(cumulativeDeaths);
             const highestDeathsInAday = findHighest(deathsPerDay);
-            const overallDeaths = cummulativeDeaths[cummulativeDeaths.length - 1];
+            const overallDeaths = cumulativeDeaths[cumulativeDeaths.length - 1];
 
-            const cummulativeRecoveries = map(recovered);
-            const recoveriesPerDay = mapDifference(cummulativeRecoveries);
+            const cumulativeRecoveries = map(recovered);
+            const recoveriesPerDay = mapDifference(cumulativeRecoveries);
             const highestRecoveriesInAday = findHighest(recoveriesPerDay);
-            const overallRecoveries = cummulativeRecoveries[cummulativeRecoveries.length - 1];
+            const overallRecoveries = cumulativeRecoveries[cumulativeRecoveries.length - 1];
 
             setData({
                 isLoading: false,
                 historicalRange: {
-                    from: formatDate(cummulativeCases[0].x),
-                    to: formatDate(cummulativeCases[cummulativeCases.length - 1].x),
+                    from: formatDate(cumulativeCases[0].x),
+                    to: formatDate(cumulativeCases[cumulativeCases.length - 1].x),
                 },
                 cases: {
                     perDay: casesPerDay,
-                    cummulative: cummulativeCases,
+                    cumulative: cumulativeCases,
                     highestInAday: highestCasesInAday,
                     overall: overallCases,
-                    averagePerDay: toWhole(overallCases.y / cummulativeCases.length),
+                    averagePerDay: toWhole(overallCases.y / cumulativeCases.length),
                     latest: casesPerDay[casesPerDay.length - 1],
                 },
                 deaths: {
                     perDay: deathsPerDay,
-                    cummulative: cummulativeDeaths,
+                    cumulative: cumulativeDeaths,
                     highestInAday: highestDeathsInAday,
                     overall: overallDeaths,
-                    averagePerDay: toWhole(overallDeaths.y / cummulativeDeaths.length),
+                    averagePerDay: toWhole(overallDeaths.y / cumulativeDeaths.length),
                     latest: deathsPerDay[deathsPerDay.length - 1],
                 },
                 recoveries: {
-                    perDay: mapDifference(cummulativeRecoveries),
-                    cummulative: cummulativeRecoveries,
+                    perDay: mapDifference(cumulativeRecoveries),
+                    cumulative: cumulativeRecoveries,
                     highestInAday: highestRecoveriesInAday,
                     overall: overallRecoveries,
-                    averagePerDay: toWhole(overallRecoveries.y / cummulativeRecoveries.length),
+                    averagePerDay: toWhole(overallRecoveries.y / cumulativeRecoveries.length),
                     latest: recoveriesPerDay[recoveriesPerDay.length - 1],
                 },
             });
@@ -222,7 +222,7 @@ export default function Daily() {
                                 <Statistic color="pink" size="medium">
                                     <Header> Case Growth Rate </Header>
                                     <Statistic.Value>
-                                        {`${calculateGrowthRate(data.cases.cummulative, 7).toFixed(2)}%`}
+                                        {`${calculateGrowthRate(data.cases.cumulative, 7).toFixed(2)}%`}
                                     </Statistic.Value>
                                     <Statistic.Label>
                                         in the last 7-days
@@ -330,10 +330,10 @@ export default function Daily() {
                                 color: 'blue',
                                 data: data.cases.perDay,
                             },
-                            cummulative: {
-                                label: 'Cummulative Cases',
+                            cumulative: {
+                                label: 'Cumulative Cases',
                                 color: 'blue',
-                                data: data.cases.cummulative,
+                                data: data.cases.cumulative,
                             },
                         }
                     }
@@ -398,10 +398,10 @@ export default function Daily() {
                                 color: 'red',
                                 data: data.deaths.perDay,
                             },
-                            cummulative: {
-                                label: 'Cummulative Deaths',
+                            cumulative: {
+                                label: 'Cumulative Deaths',
                                 color: 'red',
-                                data: data.deaths.cummulative,
+                                data: data.deaths.cumulative,
                             },
                         }
                     }
@@ -466,10 +466,10 @@ export default function Daily() {
                                 color: 'green',
                                 data: data.recoveries.perDay,
                             },
-                            cummulative: {
-                                label: 'Cummulative Recoveries',
+                            cumulative: {
+                                label: 'Cumulative Recoveries',
                                 color: 'green',
-                                data: data.recoveries.cummulative,
+                                data: data.recoveries.cumulative,
                             },
                         }
                     }

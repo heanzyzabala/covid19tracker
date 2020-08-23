@@ -12,12 +12,12 @@ import {
 
 export default function StackedChart({ data }) {
     return (
-        <Grid>
+        <Grid padded>
             <Grid.Row>
                 <LineChart label={data.perDay.label} data={data.perDay.data} color={data.perDay.color} />
             </Grid.Row>
             <Grid.Row>
-                <BarChart label={data.cummulative.label} data={data.cummulative.data} color={data.cummulative.color} />
+                <BarChart label={data.cumulative.label} data={data.cumulative.data} color={data.cumulative.color} />
             </Grid.Row>
         </Grid>
     );
@@ -35,7 +35,7 @@ StackedChart.propTypes = {
                 }).isRequired,
             ).isRequired,
         }).isRequired,
-        cummulative: PropTypes.shape({
+        cumulative: PropTypes.shape({
             label: PropTypes.string.isRequired,
             color: PropTypes.string.isRequired,
             data: PropTypes.arrayOf(
