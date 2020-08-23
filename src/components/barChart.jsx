@@ -32,7 +32,10 @@ export default function BarChart({ label, data, color }) {
                     type: 'time',
                     distribution: 'linear',
                     time: {
-                        unit: 'month',
+                        unit: 'week',
+                        displayFormats: {
+                            week: 'MMM DD',
+                        },
                     },
                 },
             ],

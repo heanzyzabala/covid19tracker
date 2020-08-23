@@ -8,6 +8,7 @@ import {
     Statistic,
     Grid,
     Loader,
+    Flag,
 } from 'semantic-ui-react';
 
 import getHistoryByCountry from '../api';
@@ -17,21 +18,38 @@ export default function Daily() {
     const [data, setData] = useState({
         isLoading: true,
         cases: {
-            cummulative: [],
             perDay: [],
+            cummulative: [],
+            highestInAday: {},
+            overall: {},
+            averagePerDay: 0,
+            latest: {},
         },
         deaths: {
-            cummulative: [],
             perDay: [],
+            cummulative: [],
+            highestInAday: {},
+            overall: {},
+            averagePerDay: 0,
+            latest: {},
         },
         recoveries: {
-            cummulative: [],
             perDay: [],
+            cummulative: [],
+            highestInAday: {},
+            overall: {},
+            averagePerDay: 0,
+            latest: {},
         },
     });
 
+    function formatDate(d) {
+        const opts = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(d).toLocaleDateString('en-US', opts);
+    }
+
     function map(arr) {
-        return Object.entries(arr).map(([k, v]) => ({ x: k, y: v }));
+        return Object.entries(arr).map(([k, v]) => ({ x: formatDate(k), y: v }));
     }
 
     function mapDifference(arr) {
@@ -39,7 +57,7 @@ export default function Daily() {
         return Object.values(arr).map(({ x, y }) => {
             const diff = Math.abs(y - prev);
             prev = y;
-            return { x, y: diff };
+            return { x: formatDate(x), y: diff };
         });
     }
 
@@ -48,7 +66,7 @@ export default function Daily() {
             if (cur.y > y) {
                 return cur;
             }
-            return { x, y };
+            return { x: formatDate(x), y };
         });
     }
 
@@ -56,10 +74,18 @@ export default function Daily() {
         return Math.floor(i);
     }
 
+    function calculateGrowthRate(arr, d) {
+        const i = arr.length - 1;
+        const present = arr[i].y;
+        const past = arr[i - d].y;
+        return ((present - past) / past) * 100;
+    }
+
     useEffect(() => {
         async function fetchData() {
             const result = await getHistoryByCountry('Philippines');
             const { cases, deaths, recovered } = result.data.timeline;
+
             const cummulativeCases = map(cases);
             const casesPerDay = mapDifference(cummulativeCases);
             const highestCasesInAday = findHighest(casesPerDay);
@@ -77,6 +103,10 @@ export default function Daily() {
 
             setData({
                 isLoading: false,
+                historicalRange: {
+                    from: formatDate(cummulativeCases[0].x),
+                    to: formatDate(cummulativeCases[cummulativeCases.length - 1].x),
+                },
                 cases: {
                     perDay: casesPerDay,
                     cummulative: cummulativeCases,
@@ -118,25 +148,136 @@ export default function Daily() {
 
     return (
         <>
-            <Container style={{ padding: '4rem 6rem' }}>
+            <Container style={{ paddingTop: '4em' }}>
                 <Header as="h1">
-                    Daily Changes
+                    COVID-19 Tracker
                     <Header.Subheader>
-                        as of August 22, 2020
+                        <Flag name="ph" />
+                        Philippines
+                    </Header.Subheader>
+                </Header>
+                <Divider hidden />
+                <Header as="h1">
+                    General Stats
+                    <Header.Subheader>
+                        as of
+                        {' '}
+                        {data.historicalRange.to}
                     </Header.Subheader>
                 </Header>
                 <Divider section />
+                <Segment basic>
+                    <Grid padded stretched stackable columns={4} textAlign="center">
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="blue" size="medium">
+                                    <Header> Total Cases </Header>
+                                    <Statistic.Value>
+                                        {data.cases.overall.y.toLocaleString()}
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        {`+${data.cases.latest.y} cases`}
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="purple" size="medium">
+                                    <Header> Active Cases </Header>
+                                    <Statistic.Value>
+                                        {(data.cases.overall.y - data.deaths.overall.y - data.recoveries.overall.y).toLocaleString()}
+                                    </Statistic.Value>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="red" size="medium">
+                                    <Header> Died </Header>
+                                    <Statistic.Value>
+                                        {data.deaths.overall.y.toLocaleString()}
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        {`+${data.deaths.latest.y} deaths`}
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="green" size="medium">
+                                    <Header> Recovered </Header>
+                                    <Statistic.Value>
+                                        {data.recoveries.overall.y.toLocaleString()}
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        {`+${data.recoveries.latest.y} recoveries`}
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="pink" size="medium">
+                                    <Header> Case Growth Rate </Header>
+                                    <Statistic.Value>
+                                        {`${calculateGrowthRate(data.cases.cummulative, 7).toFixed(2)}%`}
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        in the last 7-days
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="brown" size="medium">
+                                    <Header> Cases </Header>
+                                    <Statistic.Value>
+                                        {((data.cases.overall.y / 106700000) * 1000000).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                                    </Statistic.Value>
+                                    <Statistic.Label>
+                                        Per Million Population
+                                    </Statistic.Label>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="olive" size="medium">
+                                    <Header> Case Recovery Rate </Header>
+                                    <Statistic.Value>
+                                        {`${((data.recoveries.overall.y / data.cases.overall.y) * 100).toFixed(2)}%`}
+                                    </Statistic.Value>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Segment>
+                                <Statistic color="orange" size="medium">
+                                    <Header> Fatality Rate </Header>
+                                    <Statistic.Value>
+                                        {`${((data.deaths.overall.y / data.cases.overall.y) * 100).toFixed(2)}%`}
+                                    </Statistic.Value>
+                                </Statistic>
+                            </Segment>
+                        </Grid.Column>
+                    </Grid>
+                </Segment>
                 <Header as="h1">
                     Historical
                     <Header.Subheader>
-                        from January 01, 2020 to August 22, 2020
+                        {`from ${data.historicalRange.from} to ${data.historicalRange.to}`}
                     </Header.Subheader>
                 </Header>
-                <Header as="h1" textAlign="center">
-                    Cases
-                </Header>
+                <Divider horizontal>
+                    <Header as="h2" textAlign="center">
+                        Cases
+                    </Header>
+                </Divider>
                 <Segment basic>
-                    <Grid divided padded stackable columns={4}>
+                    <Grid divided padded stackable columns={4} textAlign="center">
                         <Grid.Column>
                             <Statistic size="small">
                                 <Statistic.Value>
@@ -198,12 +339,13 @@ export default function Daily() {
                     }
                     />
                 </Segment>
-                <Divider section />
-                <Header as="h1" textAlign="center">
-                    Deaths
-                </Header>
+                <Divider horizontal>
+                    <Header as="h2" textAlign="center">
+                        Deaths
+                    </Header>
+                </Divider>
                 <Segment basic>
-                    <Grid divided padded stackable columns={4}>
+                    <Grid divided padded stackable columns={4} textAlign="center">
                         <Grid.Column>
                             <Statistic size="small">
                                 <Statistic.Value>
@@ -265,12 +407,13 @@ export default function Daily() {
                     }
                     />
                 </Segment>
-                <Divider section />
-                <Header as="h1" textAlign="center">
-                    Recoveries
-                </Header>
+                <Divider horizontal>
+                    <Header as="h2" textAlign="center">
+                        Recoveries
+                    </Header>
+                </Divider>
                 <Segment basic>
-                    <Grid divided padded stackable columns={4}>
+                    <Grid divided padded stackable columns={4} textAlign="center">
                         <Grid.Column>
                             <Statistic size="small">
                                 <Statistic.Value>

@@ -31,9 +31,11 @@ export default function LineChart({ label, data, color }) {
             xAxes: [
                 {
                     type: 'time',
-                    distribution: 'linear',
                     time: {
-                        unit: 'month',
+                        unit: 'week',
+                        displayFormats: {
+                            week: 'MMM DD',
+                        },
                     },
                 },
             ],
