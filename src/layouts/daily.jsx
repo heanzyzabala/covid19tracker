@@ -225,7 +225,7 @@ export default function Daily() {
                                         {`${calculateGrowthRate(data.cases.cumulative, 7).toFixed(2)}%`}
                                     </Statistic.Value>
                                     <Statistic.Label>
-                                        in the last 7-days
+                                        in the last 7 days
                                     </Statistic.Label>
                                 </Statistic>
                             </Segment>
