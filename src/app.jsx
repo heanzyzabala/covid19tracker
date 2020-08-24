@@ -3,17 +3,17 @@ import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 
 import {
-    Container,
+    Segment,
 } from 'semantic-ui-react';
 
-import { Daily } from './layouts';
+import { Home } from './pages';
 
 function App() {
     return (
         <>
-            <Container>
-                <Daily />
-            </Container>
+            <Segment padded basic style={{ backgroundColor: '#f6f6f6' }}>
+                <Home />
+            </Segment>
         </>
     );
 }

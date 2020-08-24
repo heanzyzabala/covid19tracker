@@ -1,2 +1,2 @@
-export { default as LineChart } from './lineChart';
-export { default as BarChart } from './barChart';
+export { default as StackedChart } from './stackedChart';
+export { default as StatisticSegment } from './statisticSegment';

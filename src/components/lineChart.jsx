@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+
+import {
+    Line,
+} from 'react-chartjs-2';
 
 export default function LineChart({ label, data, color }) {
     const colors = {

@@ -5,10 +5,8 @@ import {
     Grid,
 } from 'semantic-ui-react';
 
-import {
-    BarChart,
-    LineChart,
-} from '../components';
+import BarChart from './barChart';
+import LineChart from './lineChart';
 
 export default function StackedChart({ data }) {
     return (
