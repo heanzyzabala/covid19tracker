@@ -7,13 +7,15 @@ import {
 } from 'semantic-ui-react';
 
 import { Home } from './pages';
+import { Footer } from './components';
 
 function App() {
     return (
         <>
-            <Segment padded basic style={{ backgroundColor: '#f6f6f6' }}>
+            <Segment padded basic style={{ backgroundColor: '#f6f6f6', marginBottom: '0em' }}>
                 <Home />
             </Segment>
+            <Footer />
         </>
     );
 }

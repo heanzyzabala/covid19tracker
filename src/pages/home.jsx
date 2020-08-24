@@ -11,7 +11,7 @@ import {
     Flag,
 } from 'semantic-ui-react';
 
-import getHistoryByCountry from '../api';
+import { getHistoryByCountry } from '../api';
 import { StatisticSegment, StackedChart } from '../components';
 
 export default function Home() {
@@ -148,8 +148,8 @@ export default function Home() {
 
     return (
         <>
-            <Container style={{ paddingTop: '4em' }}>
-                <Segment style={{ padding: '4em' }}>
+            <Container style={{ paddingTop: '4em', paddingBottom: '4em' }}>
+                <Segment style={{ padding: '2em' }}>
                     <Header as="h1">
                         COVID-19 Tracker
                         <Header.Subheader>
@@ -158,13 +158,15 @@ export default function Home() {
                         </Header.Subheader>
                     </Header>
                     <Divider hidden />
-                    <Header as="h1">
-                        General Stats
-                        <Header.Subheader>
-                            as of
-                            {' '}
-                            {data.historicalRange.to}
-                        </Header.Subheader>
+                    <Header as="h2">
+                        <Header.Content>
+                            General Stats
+                            <Header.Subheader>
+                                as of
+                                {' '}
+                                {data.historicalRange.to}
+                            </Header.Subheader>
+                        </Header.Content>
                     </Header>
                     <Divider section />
                     <Segment basic>
@@ -252,11 +254,13 @@ export default function Home() {
                             </Grid.Row>
                         </Grid>
                     </Segment>
-                    <Header as="h1">
-                        Historical
-                        <Header.Subheader>
-                            {`from ${data.historicalRange.from} to ${data.historicalRange.to}`}
-                        </Header.Subheader>
+                    <Header as="h2">
+                        <Header.Content>
+                            Historal
+                            <Header.Subheader>
+                                {`from ${data.historicalRange.from} to ${data.historicalRange.to}`}
+                            </Header.Subheader>
+                        </Header.Content>
                     </Header>
                     <Divider horizontal>
                         <Header as="h2" textAlign="center">
