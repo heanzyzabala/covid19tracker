@@ -12,7 +12,7 @@ import { Footer } from './components';
 function App() {
     return (
         <>
-            <Segment padded basic style={{ backgroundColor: '#f6f6f6', marginBottom: '0em' }}>
+            <Segment basic style={{ backgroundColor: '#f6f6f6', marginBottom: '0em' }}>
                 <Home />
             </Segment>
             <Footer />

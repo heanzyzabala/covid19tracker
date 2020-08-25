@@ -148,8 +148,12 @@ export default function Home() {
 
     return (
         <>
-            <Container style={{ paddingTop: '4em', paddingBottom: '4em' }}>
-                <Segment style={{ padding: '2em' }}>
+            <Container style={{
+                paddingTop: '4em',
+                paddingBottom: '4em',
+            }}
+            >
+                <Segment style={{ padding: '4em 2em 2em' }}>
                     <Header as="h1">
                         COVID-19 Tracker
                         <Header.Subheader>
@@ -157,7 +161,7 @@ export default function Home() {
                             Philippines
                         </Header.Subheader>
                     </Header>
-                    <Divider hidden />
+                    <Divider section hidden />
                     <Header as="h2">
                         <Header.Content>
                             General Stats
