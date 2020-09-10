@@ -1,6 +1,8 @@
 # COVID-19 Tracker
 A dashboard for tracking covid-19 cases in the Philippines.
 
+Data are pulled from: https://github.com/disease-sh/api
+
 ## Contributing
 Pull requests are welcome. Please open an issue first to discuss what you would like to change.
 
